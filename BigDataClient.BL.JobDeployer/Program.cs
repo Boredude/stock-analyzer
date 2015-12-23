@@ -7,6 +7,7 @@ namespace BigDataClient.BL.JobDeployer
 {
     class Program
     {
+        /*
         static void Main(string[] args)
         {
             using (ISshManager manager = new SshManager(Settings.Default.HostIP,
@@ -115,5 +116,6 @@ namespace BigDataClient.BL.JobDeployer
 
             Console.WriteLine("Done!");
         }
+        */
     }
 }

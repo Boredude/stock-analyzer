@@ -252,6 +252,53 @@ namespace BigData.BL.SshCommunication
             }
         }
 
+        public void Compile(string mapReduceHostPath)
+        {
+            try
+            {
+                // connect ssh and scp client
+                Connect();
+
+                var command = sshClient.CreateCommand(string.Format("javac -classpath `hadoop classpath` {0}/*.java",
+                                                                 mapReduceHostPath));
+
+                command.Execute();
+
+                // if any error occured
+                if (command.ExitStatus != 0)
+                    throw new Exception(command.Error);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not create directory", ex);
+            }
+        }
+
+        public void CreateJar(string jarName, string classesHostPath)
+        {
+            try
+            {
+                // connect ssh and scp client
+                Connect();
+
+                if (!jarName.EndsWith(".jar"))
+                    jarName += ".jar";
+
+                var command = sshClient.CreateCommand(string.Format("jar cvf {0} {1}/*.class",
+                                                                 jarName, classesHostPath));
+
+                command.Execute();
+
+                // if any error occured
+                if (command.ExitStatus != 0)
+                    throw new Exception(command.Error);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not create directory", ex);
+            }
+        }
+
         #endregion
 
         public void Dispose()
