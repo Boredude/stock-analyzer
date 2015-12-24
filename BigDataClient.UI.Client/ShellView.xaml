@@ -1,0 +1,65 @@
+﻿<controls:MetroWindow x:Class="BigData.UI.Client.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:regions="http://prismlibrary.com/"
+        xmlns:client="clr-namespace:BigData.UI.Client"
+        xmlns:infrastructure="clr-namespace:BigData.UI.Client.Infrastructure"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=client:ShellViewModel, IsDesignTimeCreatable=True}"
+        Title="STOCK ANALYZER" Height="350" Width="525">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Command="{Binding SettingsCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_settings}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl x:Name="flyoutsControl">
+            <controls:Flyout x:Name="settingsFlyout"
+                             IsOpen="{Binding IsFlyoutOpen}"
+                             AreAnimationsEnabled="True"
+                             Width="210"
+                             Header="{Binding FlyoutTitle}"
+                             Position="Right">
+                <ContentControl regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.FlyoutRegion}"/>
+            </controls:Flyout>
+            </controls:FlyoutsControl>
+        </controls:MetroWindow.Flyouts>
+                <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Main Region -->
+        <ContentControl Grid.Row="0"
+                        Grid.Column="1"
+                        regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainRegion}"/>
+
+        <!-- Status bar -->
+        <StatusBar Grid.Row="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2">
+            <StatusBarItem>STOCK ANALYZER</StatusBarItem>
+            <Separator Style="{StaticResource MetroStatusBarSeparator}" />
+            <StatusBarItem Content="{Binding StatusBarText}" />
+        </StatusBar>
+    </Grid>
+</controls:MetroWindow>
