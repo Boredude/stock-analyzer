@@ -100,7 +100,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Stocks\Views\Stocks.xaml">
+    <Page Include="Modules\Stocks\Views\StocksView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,8 +129,10 @@
     <Compile Include="Modules\Settings\Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Stocks\Views\Stocks.xaml.cs">
-      <DependentUpon>Stocks.xaml</DependentUpon>
+    <Compile Include="Modules\Stocks\ViewModels\IStocksViewModel.cs" />
+    <Compile Include="Modules\Stocks\ViewModels\StocksViewModel.cs" />
+    <Compile Include="Modules\Stocks\Views\StocksView.xaml.cs">
+      <DependentUpon>StocksView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -175,6 +177,10 @@
     <ProjectReference Include="..\BigDataClient.BL.SshCommunication\BigDataClient.BL.SshCommunication.csproj">
       <Project>{e1e01ae8-62ee-4714-8f91-72a481a5a47c}</Project>
       <Name>BigDataClient.BL.SshCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BigDataClient.BL.Stocks\BigDataClient.BL.Stocks.csproj">
+      <Project>{d90417c7-d324-41a8-ae33-53832a749efb}</Project>
+      <Name>BigDataClient.BL.Stocks</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

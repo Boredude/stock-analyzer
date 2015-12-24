@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BigData.UI.Client.Infrastructure;
+using BigData.UI.Client.Modules.Stocks.ViewModels;
 
 namespace BigData.UI.Client.Modules.Stocks.Views
 {
@@ -22,11 +23,18 @@ namespace BigData.UI.Client.Modules.Stocks.Views
     /// </summary>
     [ViewExport(RegionName = RegionNames.MainRegion)]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class Stocks : UserControl
+    public partial class StocksView : UserControl
     {
-        public Stocks()
+        public StocksView()
         {
             InitializeComponent();
+        }
+
+        [Import]
+        public IStocksViewModel ViewModel
+        {
+            get { return DataContext as IStocksViewModel; }
+            set { DataContext = value; }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using BigData.UI.Client.Infrastructure;
+using BigDataClient.BL.Stocks;
 using Prism.Mef;
 using Prism.Regions;
 
@@ -30,6 +31,7 @@ namespace BigData.UI.Client
         {
             base.ConfigureAggregateCatalog();
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AppBootstrapper).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStocksDataManager).Assembly));
         }
 
         protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
