@@ -10,6 +10,10 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
     {
         int NumOfStocks { get; set; }
         int DaysToAnalyze { get; set; }
+        bool IsOpenFeatureSelected { get; set; }
+        bool IsHighFeatureSelected { get; set; }
+        bool IsLowFeatureSelected { get; set; }
+        bool IsCloseFeatureSelected { get; set; }
         int NumOfClusters { get; set; }
     }
 }

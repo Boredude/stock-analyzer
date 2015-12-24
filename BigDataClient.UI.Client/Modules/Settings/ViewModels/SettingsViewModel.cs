@@ -12,7 +12,7 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
 {
     [Export(typeof(ISettingsViewModel))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class SettingsViewModel : BindableBase, ISettingsViewModel
+    public class SettingsViewModel : BindableBase, ISettingsViewModel, IPartImportsSatisfiedNotification
     {
         #region Data Members
 
@@ -48,8 +48,8 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
             set
             {
                 _settingsModel.NumOfStocks = value;
-                UpdateStatus();
                 OnPropertyChanged(() => NumOfStocks);
+                UpdateStatus();
             }
         }
 
@@ -59,8 +59,9 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
             set
             {
                 _settingsModel.DaysToAnalyze = value;
-                UpdateStatus();
                 OnPropertyChanged(() => DaysToAnalyze);
+                UpdateStatus();
+
             }
         }
 
@@ -121,19 +122,21 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
 
         #endregion
 
+        #region Methods
+
         private void UpdateFeaturesToAnalyze()
         {
-            var featureToAnalyze = IsOpenFeatureSelected 
+            var featureToAnalyze = IsOpenFeatureSelected
                                     ? StockPriceType.Open :
                                     0;
-            featureToAnalyze |= IsHighFeatureSelected 
-                                ? StockPriceType.High 
+            featureToAnalyze |= IsHighFeatureSelected
+                                ? StockPriceType.High
                                 : 0;
-            featureToAnalyze |= IsLowFeatureSelected 
-                                ? StockPriceType.Low 
+            featureToAnalyze |= IsLowFeatureSelected
+                                ? StockPriceType.Low
                                 : 0;
-            featureToAnalyze |= IsCloseFeatureSelected 
-                                ? StockPriceType.Close 
+            featureToAnalyze |= IsCloseFeatureSelected
+                                ? StockPriceType.Close
                                 : 0;
             // update settings model
             _settingsModel.FeaturesToAnalyze = featureToAnalyze;
@@ -145,5 +148,18 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
         {
             _statusUpdater.UpdateStatus(_settingsModel.ToString());
         }
+
+        public void OnImportsSatisfied()
+        {
+            // read features to analyzer
+            IsOpenFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Open);
+            IsLowFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Low);
+            IsHighFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.High);
+            IsCloseFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Close);
+        }
+
+        #endregion
+
+
     }
 }
