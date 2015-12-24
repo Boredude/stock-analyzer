@@ -151,11 +151,14 @@ namespace BigData.UI.Client.Modules.Settings.ViewModels
 
         public void OnImportsSatisfied()
         {
-            // read features to analyzer
-            IsOpenFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Open);
-            IsLowFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Low);
-            IsHighFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.High);
-            IsCloseFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Close);
+            // read features to analyze directly to data members to avoid unessecary write
+            _isOpenFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Open);
+            _isHighFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.High);
+            _isLowFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Low);
+            _isCloseFeatureSelected = _settingsModel.FeaturesToAnalyze.HasFlag(StockPriceType.Close);
+
+            // update status intially
+            UpdateStatus();
         }
 
         #endregion

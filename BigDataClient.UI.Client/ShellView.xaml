@@ -8,11 +8,17 @@
         xmlns:client="clr-namespace:BigData.UI.Client"
         xmlns:infrastructure="clr-namespace:BigData.UI.Client.Infrastructure"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=client:IShellViewModel, IsDesignTimeCreatable=False}"
-        Title="STOCK ANALYZER" Height="350" Width="525">
+        d:DataContext="{d:DesignInstance Type=client:ShellViewModel, IsDesignTimeCreatable=False}"
+        Title="STOCK ANALYZER" 
+        Height="460" 
+        MinHeight="460"
+        Width="845"
+        MinWidth="845"
+        WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Command="{Binding SettingsCommand}">
+            <Button Command="{Binding SettingsCommand}"
+                    ToolTip="Settings">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20" Height="20"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
@@ -37,26 +43,123 @@
             </controls:Flyout>
             </controls:FlyoutsControl>
         </controls:MetroWindow.Flyouts>
-                <Grid>
-        
+    <controls:MetroWindow.Resources>
+        <Storyboard x:Key="InTransition">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Logo" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainContent" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainContent" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-72"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="-157"/>
+                <SplineDoubleKeyFrame KeySpline="0.5,0,0.5,1" KeyTime="00:00:01.5000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Logo" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-50"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="-101"/>
+                <SplineDoubleKeyFrame KeySpline="0,0,0,1" KeyTime="00:00:01" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SideGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02" Value="1" KeySpline="0,0.5,0.5,1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02.5000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SideGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="400"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="400"/>
+                <SplineDoubleKeyFrame KeySpline="0,1,0.5,1" KeyTime="00:00:02" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainToolbar" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DetailsGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.20833317935466766"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="0.05"/>
+                <SplineDoubleKeyFrame KeySpline="0,0.495999991893768,0.504000008106232,1" KeyTime="00:00:02" Value="0.05"/>
+                <SplineDoubleKeyFrame KeySpline="0,0.500999987125397,0.504000008106232,1" KeyTime="00:00:02.5000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DetailsGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeySpline="0,0.495999991893768,0.504000008106232,1" KeyTime="00:00:02" Value="1"/>
+                <SplineDoubleKeyFrame KeySpline="0,0.500999987125397,0.504000008106232,1" KeyTime="00:00:02.5000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<PointAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SideGrid" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+                <SplinePointKeyFrame KeyTime="00:00:00" Value="0.5,0"/>
+                <SplinePointKeyFrame KeyTime="00:00:01.5000000" Value="0.5,0"/>
+                <SplinePointKeyFrame KeyTime="00:00:02" Value="0.5,0"/>
+                <SplinePointKeyFrame KeyTime="00:00:02.5000000" Value="0.5,0"/>
+            </PointAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SideGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="304.47500610351562"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>-->
+            <!--<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainToolbar" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="100"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01.5000000" Value="100"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:02" Value="0" KeySpline="0,0.495999991893768,0.504000008106232,1"/>
+            </DoubleAnimationUsingKeyFrames>-->
+        </Storyboard>
+    </controls:MetroWindow.Resources>
+    <controls:MetroWindow.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource InTransition}"/>
+        </EventTrigger>
+    </controls:MetroWindow.Triggers>
+    <Grid>
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="124"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
+
+        <!-- logo -->
+        <Canvas x:Name="Logo" 
+                Grid.Row="0" 
+                RenderTransformOrigin="0.5,0.5"
+                Margin="5,3">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <TextBlock Text="STOCK " TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" Canvas.Left="0" Canvas.Top="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="80" Width="225" TextAlignment="Left" FontWeight="Bold" />
+            <TextBlock Text="ANALYZER" TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" Height="80" TextAlignment="Left" FontWeight="Normal" Width="525" Canvas.Left="240" Canvas.Top="5"/>
+        </Canvas>
+
         <!-- Main Region -->
-        <ContentControl Grid.Row="0"
-                        Grid.Column="1"
-                        regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainRegion}"/>
+        <ContentControl Grid.Row="1"
+                        x:Name="MainContent"
+                        Margin="5,3"
+                        regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainRegion}">
+            <ContentControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ContentControl.RenderTransform>
+        </ContentControl>
 
         <!-- Status bar -->
-        <StatusBar Grid.Row="1"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="2">
+        <StatusBar Grid.Row="2">
             <StatusBarItem>STOCK ANALYZER</StatusBarItem>
             <Separator Style="{StaticResource MetroStatusBarSeparator}" />
             <StatusBarItem Content="{Binding StatusBarText}" />

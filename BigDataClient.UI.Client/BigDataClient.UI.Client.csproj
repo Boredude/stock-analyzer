@@ -100,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Stocks\Views\Stocks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,6 +120,7 @@
     <Compile Include="Infrastructure\AutoPopulateExportedViewsBehavior.cs" />
     <Compile Include="Infrastructure\StatusUpdater.cs" />
     <Compile Include="Infrastructure\IViewRegionRegistration.cs" />
+    <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="Modules\Settings\Models\ISettingsModel.cs" />
     <Compile Include="Modules\Settings\Models\SettingsModel.cs" />
@@ -123,6 +128,9 @@
     <Compile Include="Modules\Settings\ViewModels\SettingsViewModel.cs" />
     <Compile Include="Modules\Settings\Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Stocks\Views\Stocks.xaml.cs">
+      <DependentUpon>Stocks.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -175,9 +183,7 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Stocks\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
