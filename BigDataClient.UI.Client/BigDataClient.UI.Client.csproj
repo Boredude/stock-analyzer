@@ -74,6 +74,22 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -117,10 +133,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Events\SettingsChangedEvent.cs" />
     <Compile Include="Infrastructure\AutoPopulateExportedViewsBehavior.cs" />
+    <Compile Include="Infrastructure\Composition.cs" />
     <Compile Include="Infrastructure\StatusUpdater.cs" />
     <Compile Include="Infrastructure\IViewRegionRegistration.cs" />
     <Compile Include="Infrastructure\StringExtensions.cs" />
+    <Compile Include="Infrastructure\EnhancedObservableCollection.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="Modules\Settings\Models\ISettingsModel.cs" />
     <Compile Include="Modules\Settings\Models\SettingsModel.cs" />
@@ -129,8 +148,11 @@
     <Compile Include="Modules\Settings\Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Stocks\Selectors\StockDataTemplateSelector.cs" />
     <Compile Include="Modules\Stocks\ViewModels\IStocksViewModel.cs" />
+    <Compile Include="Modules\Stocks\ViewModels\IStockViewModel.cs" />
     <Compile Include="Modules\Stocks\ViewModels\StocksViewModel.cs" />
+    <Compile Include="Modules\Stocks\ViewModels\StockViewModel.cs" />
     <Compile Include="Modules\Stocks\Views\StocksView.xaml.cs">
       <DependentUpon>StocksView.xaml</DependentUpon>
     </Compile>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace BigDataClient.BL.Stocks
 {
     [Export(typeof(IStock))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
+    [DebuggerDisplay("{Symbol}| {Name}")]
     public class Stock : IStock
     {
         #region Properties
@@ -19,6 +21,7 @@ namespace BigDataClient.BL.Stocks
         public string TestIssue { get; set; }
         public string FinancialStatus { get; set; }
         public string RoundLotSize { get; set; }
+        public IEnumerable<IStockTicker> Tickers { get; set; }
 
         #endregion
 
@@ -26,7 +29,7 @@ namespace BigDataClient.BL.Stocks
 
         public override bool Equals(object obj)
         {
-            var other = obj as IStock;
+            var other = obj as IStockIdentifier;
             return other == null ? base.Equals(obj) : Symbol.Equals(other.Symbol);
         }
 

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BigDataClient.BL.Stocks
 {
-    public interface IStocksDataManager
+    public interface IStockIdentifier
     {
-        IEnumerable<IStock> GetStocks(int amount);
+        string Symbol { get; set; }
+        string Name { get; set; }
     }
 }

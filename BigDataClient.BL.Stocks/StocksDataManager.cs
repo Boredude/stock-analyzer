@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using CsvHelper;
+using RestSharp;
 
 namespace BigDataClient.BL.Stocks
 {
@@ -25,6 +26,9 @@ namespace BigDataClient.BL.Stocks
 
         public IEnumerable<IStock> GetStocks(int amount)
         {
+            // wait to seconds for dramatic effect
+            Task.Delay(TimeSpan.FromSeconds(2)).Wait();
+
             var stocks = new List<IStock>();
 
             using (var stream = Assembly.GetExecutingAssembly()
@@ -52,11 +56,6 @@ namespace BigDataClient.BL.Stocks
             }
 
             return stocks;
-        }
-
-        public Task<IEnumerable<IStock>> GetStocksAsync(int amount)
-        {
-            return Task<IEnumerable<IStock>>.Factory.StartNew(() => GetStocks(amount));
         }
 
         #endregion

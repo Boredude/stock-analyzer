@@ -12,7 +12,9 @@ namespace BigData.UI.Client
     {
         protected override DependencyObject CreateShell()
         {
-            return this.Container.GetExportedValue<ShellView>();
+            var shell = this.Container.GetExportedValue<ShellView>();
+            Application.Current.MainWindow = shell;
+            return shell;
         }
 
         protected override void InitializeShell()
@@ -23,6 +25,7 @@ namespace BigData.UI.Client
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+            Composition.Initialize(Container);
             Container.ComposeExportedValue(Container);
         }
 

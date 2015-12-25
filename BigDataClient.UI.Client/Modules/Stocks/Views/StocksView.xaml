@@ -7,13 +7,89 @@
              xmlns:viewModels="clr-namespace:BigData.UI.Client.Modules.Stocks.ViewModels"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:selectors="clr-namespace:BigData.UI.Client.Modules.Stocks.Selectors"
              d:DataContext="{d:DesignInstance Type=viewModels:StocksViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
              d:DesignHeight="300" 
              d:DesignWidth="300">
+    <UserControl.Resources>
+
+        <selectors:StockDataTemplateSelector x:Key="StockDataTemplateSelector">
+            <selectors:StockDataTemplateSelector.NoDataTemplate>
+                <DataTemplate>
+                    <Grid Width="16"
+                          Height="16"
+                          Background="{DynamicResource AccentColorBrush2}">
+                        <Grid.OpacityMask>
+                            <VisualBrush Stretch="Uniform"
+                             Visual="{DynamicResource appbar_arrow_up_down}" />
+                        </Grid.OpacityMask>
+                    </Grid>
+                </DataTemplate>
+            </selectors:StockDataTemplateSelector.NoDataTemplate>
+            <selectors:StockDataTemplateSelector.HasDataTemplate>
+                <DataTemplate>
+                    <Grid Width="16"
+                          Height="16"
+                          Background="{DynamicResource AccentColorBrush2}">
+                        <Grid.OpacityMask>
+                            <VisualBrush Stretch="Uniform"
+                             Visual="{DynamicResource appbar_check}" />
+                        </Grid.OpacityMask>
+                    </Grid>
+                </DataTemplate>
+            </selectors:StockDataTemplateSelector.HasDataTemplate>
+            <selectors:StockDataTemplateSelector.LoadingDataTemplate>
+                <DataTemplate>
+                    <controls:ProgressRing Width="16" 
+                                           Height="16"
+                                           IsLarge="True"
+                                           IsActive="True"
+                                           Foreground="{DynamicResource AccentColorBrush2}"/>
+                </DataTemplate>
+            </selectors:StockDataTemplateSelector.LoadingDataTemplate>
+        </selectors:StockDataTemplateSelector>
+        
+    </UserControl.Resources>
+
     <Grid>
-        <controls:ProgressRing IsActive="{Binding IsBusy}"/>
-        <DataGrid ItemsSource="{Binding Stocks}"
-                  Visibility="{c:Binding !IsBusy}" />
+
+        <!-- Loading indicator -->
+        <controls:ProgressRing Grid.Row="0" 
+                               IsActive="{Binding IsBusy}" />
+
+        <Grid Visibility="{c:Binding !IsBusy}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Stocks -->
+            <DataGrid Grid.Row="0"
+                      ItemsSource="{Binding Stocks}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Symbol"
+                                        Binding="{Binding Symbol}" />
+                    <DataGridTextColumn Header="Name"
+                                        Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Has Data" 
+                                            CellTemplateSelector="{StaticResource StockDataTemplateSelector}">
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Analyze -->
+            <Button Grid.Row="1" 
+                    Margin="10"
+                    Width="80"
+                    HorizontalAlignment="Left"
+                    Content="Analyze"
+                    Style="{DynamicResource AccentedSquareButtonStyle}"
+                    IsEnabled="{c:Binding !IsLoadingStockData}"
+                    Command="{Binding AnalyzeCommand}" />
+        </Grid>
     </Grid>
+    
 </UserControl>
