@@ -139,8 +139,8 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </Canvas.RenderTransform>
-            <TextBlock Text="STOCK " TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" Canvas.Left="0" Canvas.Top="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="80" Width="225" TextAlignment="Left" FontWeight="Bold" />
-            <TextBlock Text="ANALYZER" TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" Height="80" TextAlignment="Left" FontWeight="Normal" Width="525" Canvas.Left="240" Canvas.Top="5"/>
+            <TextBlock Text="STOCK " TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" Canvas.Left="0" Canvas.Top="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextAlignment="Left" FontWeight="Bold" />
+            <TextBlock Text="ANALYZER" TextWrapping="NoWrap" Foreground="#FFC4CFD6" FontSize="72" Opacity="0.85" TextAlignment="Left" FontWeight="Normal" Canvas.Left="240" Canvas.Top="5"/>
         </Canvas>
 
         <!-- Main Region -->
