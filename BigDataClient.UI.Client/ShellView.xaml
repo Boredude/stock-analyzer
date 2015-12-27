@@ -121,7 +121,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="124"/>
+            <RowDefinition Height="104"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -144,20 +144,31 @@
         </Canvas>
 
         <!-- Main Region -->
-        <ContentControl Grid.Row="1"
-                        x:Name="MainContent"
-                        Margin="5,3"
-                        regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.MainRegion}">
-            <ContentControl.RenderTransform>
+        <controls:MetroAnimatedSingleRowTabControl Grid.Row="1"
+                                                   x:Name="MainContent">
+            <!-- Stocks -->
+            <TabItem Header="Stocks">
+                <ContentControl Margin="5,3"
+                                regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.StocksRegion}"/>
+            </TabItem>
+
+            <TabItem IsEnabled="True" IsHitTestVisible="False" Header=" | ">
+            </TabItem>
+
+            <TabItem Header="Results">
+                <ContentControl Margin="5,3"
+                                regions:RegionManager.RegionName="{x:Static infrastructure:RegionNames.ResultsRegion}"/>
+            </TabItem>
+            <controls:MetroAnimatedSingleRowTabControl.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform/>
                 </TransformGroup>
-            </ContentControl.RenderTransform>
-        </ContentControl>
-
+            </controls:MetroAnimatedSingleRowTabControl.RenderTransform>
+        </controls:MetroAnimatedSingleRowTabControl>
+        
         <!-- Status bar -->
         <StatusBar Grid.Row="2">
             <StatusBarItem>STOCK ANALYZER</StatusBarItem>

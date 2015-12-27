@@ -18,9 +18,13 @@ namespace BigDataClient.BL.Stocks
 
         private const string STOCK_DATA_BASE_URI = "http://ichart.yahoo.com/table.csv";
         private const string STOCK_DATA_SYMBOL_PARAM = "s";
-        private const string STOCK_DATA_MONTH_PARAM = "a";
-        private const string STOCK_DATA_DAYS_PARAM = "b";
-        private const string STOCK_DATA_YEAR_PARAM = "c";
+        private const string STOCK_DATA_FROM_MONTH_PARAM = "a";
+        private const string STOCK_DATA_FROM_DAYS_PARAM = "b";
+        private const string STOCK_DATA_FROM_YEAR_PARAM = "c";
+        private const string STOCK_DATA_TO_MONTH_PARAM = "d";
+        private const string STOCK_DATA_TO_DAYS_PARAM = "e";
+        private const string STOCK_DATA_TO_YEAR_PARAM = "f";
+        private const string STOCK_DATA_INTERVAL_PARAM = "g";
 
         #endregion
 
@@ -36,9 +40,13 @@ namespace BigDataClient.BL.Stocks
                 var fromDate = DateTime.Now.Subtract(TimeSpan.FromDays(days));
                 // create the REST request
                 var request = new RestRequest().AddQueryParameter(STOCK_DATA_SYMBOL_PARAM, symbol)
-                                               .AddQueryParameter(STOCK_DATA_MONTH_PARAM, (fromDate.Month - 1).ToString())
-                                               .AddQueryParameter(STOCK_DATA_DAYS_PARAM, fromDate.Day.ToString())
-                                               .AddQueryParameter(STOCK_DATA_YEAR_PARAM, fromDate.Year.ToString());
+                                               .AddQueryParameter(STOCK_DATA_FROM_MONTH_PARAM, (fromDate.Month - 1).ToString())
+                                               .AddQueryParameter(STOCK_DATA_FROM_DAYS_PARAM, fromDate.Day.ToString())
+                                               .AddQueryParameter(STOCK_DATA_FROM_YEAR_PARAM, fromDate.Year.ToString())
+                                               .AddQueryParameter(STOCK_DATA_TO_MONTH_PARAM, (DateTime.Now.Month - 1).ToString())
+                                               .AddQueryParameter(STOCK_DATA_TO_DAYS_PARAM, DateTime.Now.Day.ToString())
+                                               .AddQueryParameter(STOCK_DATA_TO_YEAR_PARAM, DateTime.Now.Year.ToString())
+                                               .AddQueryParameter(STOCK_DATA_INTERVAL_PARAM, "d");
                 // execute request
                 var response = client.Get(request);
 

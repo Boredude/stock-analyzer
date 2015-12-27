@@ -14,26 +14,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BigData.UI.Client.Infrastructure;
-using BigData.UI.Client.Modules.Stocks.ViewModels;
+using BigData.UI.Client.Modules.Results.ViewModels;
 
-namespace BigData.UI.Client.Modules.Stocks.Views
+namespace BigData.UI.Client.Modules.Results.Views
 {
     /// <summary>
-    /// Interaction logic for Stocks.xaml
+    /// Interaction logic for ResultsView.xaml
     /// </summary>
-    [ViewExport(RegionName = RegionNames.StocksRegion)]
+    [ViewExport(RegionName = RegionNames.ResultsRegion)]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class StocksView : UserControl
+    public partial class ResultsView : UserControl
     {
-        public StocksView()
+        public ResultsView()
         {
             InitializeComponent();
         }
 
         [Import]
-        public IStocksViewModel ViewModel
+        public IResultsViewModel ViewModel
         {
-            get { return DataContext as IStocksViewModel; }
+            get { return DataContext as IResultsViewModel; }
             set { DataContext = value; }
         }
     }

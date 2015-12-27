@@ -112,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Modules\Results\Views\ResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Settings\Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,6 +145,11 @@
     <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="Infrastructure\EnhancedObservableCollection.cs" />
     <Compile Include="IShellViewModel.cs" />
+    <Compile Include="Modules\Results\ViewModels\IResultsViewModel.cs" />
+    <Compile Include="Modules\Results\ViewModels\ResultsViewModel.cs" />
+    <Compile Include="Modules\Results\Views\ResultsView.xaml.cs">
+      <DependentUpon>ResultsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Settings\Models\ISettingsModel.cs" />
     <Compile Include="Modules\Settings\Models\SettingsModel.cs" />
     <Compile Include="Modules\Settings\ViewModels\ISettingsViewModel.cs" />

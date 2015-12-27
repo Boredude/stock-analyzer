@@ -101,7 +101,7 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
             });
 
             // TODO: remark
-            //Task.Delay(3000).Wait();
+            //Task.Delay(1500).Wait();
 
             // get stock tickers
             var tickers = _stockDataManager.GetStockData(Symbol, _settingsModel.DaysToAnalyze)
