@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D90417C7-D324-41A8-AE33-53832A749EFB}</ProjectGuid>
+    <ProjectGuid>{2261693A-697B-4B7D-9494-311225FC1285}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BigDataClient.BL.Stocks</RootNamespace>
-    <AssemblyName>BigDataClient.BL.Stocks</AssemblyName>
+    <RootNamespace>BigDataClient.BL.Infrastructure</RootNamespace>
+    <AssemblyName>BigDataClient.BL.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,16 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.2.13.5.0\lib\net40-client\CsvHelper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,31 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IStock.cs" />
-    <Compile Include="IStockDataManager.cs" />
-    <Compile Include="IStockIdentifier.cs" />
-    <Compile Include="IStocksAnalyzer.cs" />
-    <Compile Include="IStockTicker.cs" />
-    <Compile Include="Stock.cs" />
-    <Compile Include="StockDataManager.cs" />
-    <Compile Include="StockPriceType.cs" />
-    <Compile Include="StocksAnalyzer.cs" />
-    <Compile Include="StocksDataManager.cs" />
-    <Compile Include="IStocksDataManager.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StockTicker.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="stockSymbols.csv" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BigDataClient.BL.Infrastructure\BigDataClient.BL.Infrastructure.csproj">
-      <Project>{2261693a-697b-4b7d-9494-311225fc1285}</Project>
-      <Name>BigDataClient.BL.Infrastructure</Name>
-    </ProjectReference>
+    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

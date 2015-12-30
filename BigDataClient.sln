@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F306DE0B-5CAB-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigDataClient.BL.Stocks", "BigDataClient.BL.Stocks\BigDataClient.BL.Stocks.csproj", "{D90417C7-D324-41A8-AE33-53832A749EFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigDataClient.BL.Infrastructure", "BigDataClient.BL.Infrastructure\BigDataClient.BL.Infrastructure.csproj", "{2261693A-697B-4B7D-9494-311225FC1285}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{D90417C7-D324-41A8-AE33-53832A749EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D90417C7-D324-41A8-AE33-53832A749EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D90417C7-D324-41A8-AE33-53832A749EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2261693A-697B-4B7D-9494-311225FC1285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2261693A-697B-4B7D-9494-311225FC1285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2261693A-697B-4B7D-9494-311225FC1285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2261693A-697B-4B7D-9494-311225FC1285}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{E1E01AE8-62EE-4714-8F91-72A481A5A47C} = {484A4D2E-2C93-4969-AC0C-F14846B36F9D}
 		{7A475AA0-E712-4123-9ECC-010BACE9CB44} = {484A4D2E-2C93-4969-AC0C-F14846B36F9D}
 		{D90417C7-D324-41A8-AE33-53832A749EFB} = {484A4D2E-2C93-4969-AC0C-F14846B36F9D}
+		{2261693A-697B-4B7D-9494-311225FC1285} = {484A4D2E-2C93-4969-AC0C-F14846B36F9D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45

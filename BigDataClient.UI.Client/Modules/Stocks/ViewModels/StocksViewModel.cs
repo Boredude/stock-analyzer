@@ -31,6 +31,8 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         private ISettingsModel _settingsModel;
         [Import]
         private IEventAggregator _eventAggregator;
+        [Import]
+        private IStocksAnalyzer _stocksAnalyzer;
 
         private EnhancedObservableCollection<IStockViewModel> _stocks;
         private CancellationTokenSource _cancellationTokenSource;
@@ -55,6 +57,10 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
                 if (result == MessageDialogResult.Affirmative)
                 {
                     // TODO: Launch MapReduce
+                    _stocksAnalyzer.Analyze(Stocks.Select(s => s.GetStock()), 
+                                            _settingsModel.FeaturesToAnalyze,
+                                            _settingsModel.NumOfClusters);
+
                 }
             });
         }

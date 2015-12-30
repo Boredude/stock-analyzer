@@ -13,6 +13,6 @@ namespace BigDataClient.BL.Stocks
         string TestIssue { get; set; }
         string FinancialStatus { get; set; }
         string RoundLotSize { get; set; }
-        IEnumerable<IStockTicker> Tickers { get; set; } 
+        IEnumerable<IStockTicker> Tickers { get; set; }
     }
 }

@@ -142,7 +142,6 @@
     <Compile Include="Infrastructure\Composition.cs" />
     <Compile Include="Infrastructure\StatusUpdater.cs" />
     <Compile Include="Infrastructure\IViewRegionRegistration.cs" />
-    <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="Infrastructure\EnhancedObservableCollection.cs" />
     <Compile Include="IShellViewModel.cs" />
     <Compile Include="Modules\Results\ViewModels\IResultsViewModel.cs" />
@@ -201,6 +200,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BigDataClient.BL.Infrastructure\BigDataClient.BL.Infrastructure.csproj">
+      <Project>{2261693a-697b-4b7d-9494-311225fc1285}</Project>
+      <Name>BigDataClient.BL.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BigDataClient.BL.JobDeployer\BigDataClient.BL.JobDeployer.csproj">
       <Project>{7a475aa0-e712-4123-9ecc-010bace9cb44}</Project>
       <Name>BigDataClient.BL.JobDeployer</Name>

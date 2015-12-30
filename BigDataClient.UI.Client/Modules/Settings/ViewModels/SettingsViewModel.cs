@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BigData.UI.Client.Infrastructure;
 using BigData.UI.Client.Modules.Settings.Models;
+using BigDataClient.BL.Stocks;
 using Prism.Mvvm;
 
 namespace BigData.UI.Client.Modules.Settings.ViewModels

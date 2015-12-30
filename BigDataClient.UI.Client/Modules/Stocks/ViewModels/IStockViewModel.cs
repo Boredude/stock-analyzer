@@ -15,5 +15,6 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         bool IsLoadingData { get; set; }
         bool HasData { get; set; }
         void DownloadStockData();
+        IStock GetStock();
     }
 }
