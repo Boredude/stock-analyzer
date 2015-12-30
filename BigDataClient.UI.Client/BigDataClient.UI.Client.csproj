@@ -140,7 +140,6 @@
     <Compile Include="Events\SettingsChangedEvent.cs" />
     <Compile Include="Infrastructure\AutoPopulateExportedViewsBehavior.cs" />
     <Compile Include="Infrastructure\Composition.cs" />
-    <Compile Include="Infrastructure\StatusUpdater.cs" />
     <Compile Include="Infrastructure\IViewRegionRegistration.cs" />
     <Compile Include="Infrastructure\EnhancedObservableCollection.cs" />
     <Compile Include="IShellViewModel.cs" />

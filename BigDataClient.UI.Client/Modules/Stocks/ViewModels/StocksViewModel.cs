@@ -55,14 +55,9 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
                  MessageDialogStyle.AffirmativeAndNegative);
 
                 if (result == MessageDialogResult.Affirmative)
-                {
-                    // TODO: Launch MapReduce
-                    _stocksAnalyzer.Analyze(Stocks.Select(s => s.GetStock()), 
-                                            _settingsModel.FeaturesToAnalyze,
-                                            _settingsModel.NumOfClusters);
-
-                }
-            });
+                    AnalyzeStocks();
+            },
+            () => !IsLoadingStockData && _stocksAnalyzer.CanAnalyze);
         }
 
         #endregion
@@ -109,6 +104,9 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
         public void OnImportsSatisfied()
         {
+            // Check if analyze can be performed
+            _stocksAnalyzer.CanAnalyzeChanged += canAnalyze => AnalyzeCommand.RaiseCanExecuteChanged();
+
             // Subscribe to settings changed event
             _eventAggregator.GetEvent<SettingsChangedEvent>()
                             .Subscribe(async x =>
@@ -127,6 +125,14 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
             // Get stocks
             GetStocks();
+        }
+
+        private void AnalyzeStocks()
+        {
+            // start the analyze operation
+            _stocksAnalyzer.Analyze(Stocks.Select(s => s.GetStock()),
+                                    _settingsModel.FeaturesToAnalyze,
+                                    _settingsModel.NumOfClusters);
         }
 
         private async void GetStocks()

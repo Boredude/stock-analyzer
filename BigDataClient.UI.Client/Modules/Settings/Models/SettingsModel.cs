@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BigData.UI.Client.Events;
 using BigData.UI.Client.Infrastructure;
+using BigDataClient.BL.Infrastructure;
 using BigDataClient.BL.Stocks;
 using Prism.Events;
 

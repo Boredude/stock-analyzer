@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
 using BigData.UI.Client.Infrastructure;
+using BigDataClient.BL.Infrastructure;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -85,7 +86,7 @@ namespace BigData.UI.Client
         private void OnStatusChanged(string status)
         {
             // update text
-            StatusBarText = status;
+            Application.Current.Dispatcher.InvokeAsync(() => StatusBarText = status);
         }
 
         public void OnImportsSatisfied()
