@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Prism.Events;
 
-namespace BigDataClient.BL.Stocks
+namespace BigData.UI.Client.Events
 {
-    public interface IStocksDataManager
+    public class StockAnalysisStartedEvent : PubSubEvent<DateTime>
     {
-        IEnumerable<IStock> GetStocks(int amount);
     }
 }

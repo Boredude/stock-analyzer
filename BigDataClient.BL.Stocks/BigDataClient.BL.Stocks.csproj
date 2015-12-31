@@ -34,6 +34,10 @@
       <HintPath>..\packages\CsvHelper.2.13.5.0\lib\net40-client\CsvHelper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Core.1.0.0-unstable1915\lib\net45\OxyPlot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -50,16 +54,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IStock.cs" />
+    <Compile Include="IStockAnalysisResults.cs" />
+    <Compile Include="StockAnalysisResult.cs" />
+    <Compile Include="IStockAnalysisResult.cs" />
+    <Compile Include="IStockCollection.cs" />
     <Compile Include="IStockDataManager.cs" />
     <Compile Include="IStockIdentifier.cs" />
-    <Compile Include="IStocksAnalyzer.cs" />
+    <Compile Include="IStockAnalyzer.cs" />
     <Compile Include="IStockTicker.cs" />
     <Compile Include="Stock.cs" />
+    <Compile Include="StockAnalysisResults.cs" />
+    <Compile Include="StockCollection.cs" />
     <Compile Include="StockDataManager.cs" />
     <Compile Include="StockPriceType.cs" />
-    <Compile Include="StocksAnalyzer.cs" />
-    <Compile Include="StocksDataManager.cs" />
-    <Compile Include="IStocksDataManager.cs" />
+    <Compile Include="StockAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockTicker.cs" />
   </ItemGroup>

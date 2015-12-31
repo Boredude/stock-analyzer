@@ -36,7 +36,7 @@ namespace BigData.UI.Client
             base.ConfigureAggregateCatalog();
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AppBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStatusUpdater).Assembly));
-            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStocksDataManager).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStockDataManager).Assembly));
         }
 
         protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()

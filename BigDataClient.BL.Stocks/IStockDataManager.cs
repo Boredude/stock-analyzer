@@ -8,6 +8,7 @@ namespace BigDataClient.BL.Stocks
 {
     public interface IStockDataManager
     {
+        IEnumerable<IStock> GetStocks(int amount);
         IEnumerable<IStockTicker> GetStockData(string symbol, int days);
     }
 }

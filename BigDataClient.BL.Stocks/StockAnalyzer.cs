@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using BigDataClient.BL.Infrastructure;
 using CsvHelper;
 
 namespace BigDataClient.BL.Stocks
 {
-    [Export(typeof(IStocksAnalyzer))]
+    [Export(typeof(IStockAnalyzer))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    public class StocksAnalyzer : IStocksAnalyzer
+    public class StockAnalyzer : IStockAnalyzer
     {
         #region Constants
 
@@ -26,54 +28,53 @@ namespace BigDataClient.BL.Stocks
         [Import]
         private IStatusUpdater _statusUpdater;
 
-        private bool _canAnalyze;
-
         #endregion
 
         #region Ctor
 
-        public StocksAnalyzer()
+        public StockAnalyzer()
         {
-            CanAnalyze = true;
         }
 
         #endregion
 
         #region Properties
 
-        public bool CanAnalyze
-        {
-            get { return _canAnalyze; }
-            set
-            {
-                _canAnalyze = value;
-                var handler = CanAnalyzeChanged;
-                handler?.Invoke(_canAnalyze);
-            }
-        }
+        public bool IsAnalyzing { get; private set; }
 
         #endregion
 
-        #region Events & Delegates
-
-        public event Action<bool> CanAnalyzeChanged;
-
-        #endregion
-
-        public void Analyze(IEnumerable<IStock> stocks, StockPriceType features, int clusters)
+        public IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, StockPriceType features, int clusters)
         {
             // Indicate analyze process is in progress hence cannot be started
-            CanAnalyze = false;
+            IsAnalyzing = true;
+            // start stopwatch timer
+            var stopwatch = Stopwatch.StartNew(); 
 
             // Don't start analyzing if not stocks are enabled
-            if (!stocks.Any()) return;
+            if (!stocks.Any()) return new StockAnalysisResults
+            {
+                Duration = stopwatch.Elapsed,
+                IsSuccess = false,
+                Results = null
+            };
+
             //Export the stocks to the input directory
             Export("input", stocks, features);
 
             // TODO: Continue implementation
 
             // Indicate analyze process has finished hence can be started
-            CanAnalyze = true;
+            IsAnalyzing = false;
+            // stop stopwatch
+            stopwatch.Stop();
+
+            return new StockAnalysisResults
+            {
+                Duration = stopwatch.Elapsed,
+                IsSuccess = true,
+                Results = null
+            };
         }
 
         private void Export(string directory, IEnumerable<IStock> stocks, StockPriceType features)

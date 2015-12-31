@@ -105,7 +105,7 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
             // get stock tickers
             var tickers = _stockDataManager.GetStockData(Symbol, _settingsModel.DaysToAnalyze)
-                                            .ToList();
+                                           .ToList();
             // set stock tickers
             _stock.Tickers = tickers;
 

@@ -87,7 +87,6 @@
                     HorizontalAlignment="Left"
                     Content="Analyze"
                     Style="{DynamicResource AccentedSquareButtonStyle}"
-                    IsEnabled="{c:Binding !IsLoadingStockData}"
                     Command="{Binding AnalyzeCommand}" />
         </Grid>
     </Grid>

@@ -26,13 +26,15 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         #region Data Members
 
         [Import]
-        private IStocksDataManager _stocksDataManager;
+        private IStockDataManager _stocksDataManager;
         [Import]
         private ISettingsModel _settingsModel;
         [Import]
         private IEventAggregator _eventAggregator;
         [Import]
-        private IStocksAnalyzer _stocksAnalyzer;
+        private IStockAnalyzer _stocksAnalyzer;
+        [Import]
+        private IStockCollection _stockCollection;
 
         private EnhancedObservableCollection<IStockViewModel> _stocks;
         private CancellationTokenSource _cancellationTokenSource;
@@ -47,17 +49,7 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
         public StocksViewModel()
         {
-            AnalyzeCommand = new DelegateCommand(async () =>
-            {
-                var result = await ((MetroWindow) Application.Current.MainWindow).ShowMessageAsync
-                ("Analyze", 
-                 "The operation you are about to perform may take a few minutes. Are you sure you want to continue?",
-                 MessageDialogStyle.AffirmativeAndNegative);
-
-                if (result == MessageDialogResult.Affirmative)
-                    AnalyzeStocks();
-            },
-            () => !IsLoadingStockData && _stocksAnalyzer.CanAnalyze);
+            InitCommands();
         }
 
         #endregion
@@ -102,11 +94,33 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
         #region Methods
 
+        private void InitCommands()
+        {
+            AnalyzeCommand = new DelegateCommand(async () =>
+            {
+                var result = await ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync
+                ("Analyze",
+                 "The operation you are about to perform may take a few minutes and is uncancelable. " +
+                 "Are you sure you want to continue?",
+                 MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result == MessageDialogResult.Affirmative)
+                    AnalyzeStocks();
+            },
+            () => !IsLoadingStockData && !_stocksAnalyzer.IsAnalyzing);
+            // raise canExecute on IsLoadingStockData changes
+            AnalyzeCommand.ObservesProperty(() => IsLoadingStockData);
+        }
+
         public void OnImportsSatisfied()
         {
-            // Check if analyze can be performed
-            _stocksAnalyzer.CanAnalyzeChanged += canAnalyze => AnalyzeCommand.RaiseCanExecuteChanged();
-
+            // subscribe to analysis process start event
+            _eventAggregator.GetEvent<StockAnalysisStartedEvent>()
+                            .Subscribe(time => AnalyzeCommand.RaiseCanExecuteChanged());
+            // subscribe to analysis process completed event
+            _eventAggregator.GetEvent<StockAnalysisCompletedEvent>()
+                .Subscribe(time => AnalyzeCommand.RaiseCanExecuteChanged());
+            
             // Subscribe to settings changed event
             _eventAggregator.GetEvent<SettingsChangedEvent>()
                             .Subscribe(async x =>
@@ -127,34 +141,59 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
             GetStocks();
         }
 
-        private void AnalyzeStocks()
+        private async void AnalyzeStocks()
         {
-            // start the analyze operation
-            _stocksAnalyzer.Analyze(Stocks.Select(s => s.GetStock()),
-                                    _settingsModel.FeaturesToAnalyze,
-                                    _settingsModel.NumOfClusters);
+            // publish alasis started event
+            _eventAggregator.GetEvent<StockAnalysisStartedEvent>()
+                            .Publish(DateTime.Now);
+
+            // wait for analysis to complete in non-blocking way
+            var results = await AnalyzeStocksAsync();
+
+            // publish results
+            _eventAggregator.GetEvent<StockAnalysisCompletedEvent>()
+                            .Publish(results);
+        }
+
+        private Task<IStockAnalysisResults> AnalyzeStocksAsync()
+        {
+            return Task.Run(() => _stocksAnalyzer.Analyze(_stockCollection,
+                                                          _settingsModel.FeaturesToAnalyze,
+                                                          _settingsModel.NumOfClusters));
         }
 
         private async void GetStocks()
         {
             // set busy indicator
-            IsBusy = true;
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                IsBusy = true;
+            });
+
             // wait for stocks to be loaded
             _getStocksTask = GetStocksAsync();
-            var stocks = await _getStocksTask;
+            // set as the current stocks collection
+            _stockCollection.Set(await _getStocksTask);
             // set stocks
-            SyncStocks(stocks);
-            // reset busy indicator
-            IsBusy = false;
-            // indicate we are loading stock data
-            IsLoadingStockData = true;
+            SyncStocks(_stockCollection);
+
+            // set indicators
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                IsBusy = false;
+                IsLoadingStockData = true;
+            });
+            
             // init cancellation token
             _cancellationTokenSource = new CancellationTokenSource();
             // start downloading stock data
             _downloadStocksDataTask = DownloadStocksDataAsync();
             await _downloadStocksDataTask;
             // reset loading indicator
-            IsLoadingStockData = false;
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                IsLoadingStockData = false;
+            });
         }
 
         private void SyncStocks(IEnumerable<IStock> stocks)
