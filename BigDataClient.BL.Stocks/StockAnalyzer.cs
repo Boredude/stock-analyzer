@@ -73,7 +73,10 @@ namespace BigDataClient.BL.Stocks
             {
                 Duration = stopwatch.Elapsed,
                 IsSuccess = true,
-                Results = null
+                Results = stocks.Select(stock => new StockAnalysisResult(stock)
+                {
+                    Cluster = 1
+                })
             };
         }
 

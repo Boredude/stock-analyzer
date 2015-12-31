@@ -4,14 +4,70 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BigData.UI.Client.Modules.Results.Views"
+             xmlns:viewModels="clr-namespace:BigData.UI.Client.Modules.Results.ViewModels"
              xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewModels:IResultsViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <oxy:Plot Title="Some Title">
-            <oxy:Plot.Series>
-                <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:Plot.Series>
-        </oxy:Plot>
+
+        <!-- Clusters -->
+        <ItemsControl ItemsSource="{Binding Results}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1"
+                                 Columns="{Binding Results.Count}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <!-- cluster header -->
+                        <TextBlock Text="{Binding Key, Mode=OneWay}"/>
+
+                            <!-- Stocks -->
+                        <ItemsControl ItemsSource="{Binding}" >
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding StockSymbol}"
+                                                   Grid.Column="0"
+                                                   VerticalAlignment="Center"/>
+                                        <oxy:Plot Height="80"
+                                                  Width="140"
+                                                  Grid.Column="1"
+                                                  IsEnabled="False"
+                                                  IsLegendVisible="False">
+                                            <oxy:Plot.Axes>
+                                                <oxy:LinearAxis Position="Left" 
+                                                                TickStyle="None" 
+                                                                TextColor="Transparent"/>
+                                                <oxy:LinearAxis Position="Bottom" 
+                                                                TickStyle="None" 
+                                                                TextColor="Transparent"/>
+                                            </oxy:Plot.Axes>
+                                            <oxy:Plot.Series>
+                                                <oxy:LineSeries ItemsSource="{Binding OpenTickers, Mode=OneWay}"
+                                                                BrokenLineColor="LightGreen"/>
+                                                <oxy:LineSeries ItemsSource="{Binding HighTickers, Mode=OneWay}"
+                                                                BrokenLineColor="Yellow"/>
+                                                <oxy:LineSeries ItemsSource="{Binding LowTickers, Mode=OneWay}"
+                                                                BrokenLineColor="Coral"/>
+                                                <oxy:LineSeries ItemsSource="{Binding CloseTickers, Mode=OneWay}"
+                                                                BrokenLineColor="Red"/>
+                                            </oxy:Plot.Series>
+                                        </oxy:Plot>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

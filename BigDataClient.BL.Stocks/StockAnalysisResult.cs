@@ -15,7 +15,7 @@ namespace BigDataClient.BL.Stocks
     {
         #region Data Members
 
-        private IStock _stock;
+        private readonly IStock _stock;
 
         #endregion
 
@@ -32,13 +32,20 @@ namespace BigDataClient.BL.Stocks
 
         public int Cluster { get; set; }
 
+        public string StockSymbol
+        {
+            get { return _stock.Symbol; }
+        }
+
         public IEnumerable<DataPoint> OpenTickers
         {
             get
             {
+                int rollingIndex = 1;
                 return _stock.Tickers
-                             .ToDictionary(t => t.Date.Day, t => t.Open)
-                             .Select(p => new DataPoint(p.Key, p.Value));
+                             .ToDictionary(t => rollingIndex++, t => t.Open)
+                             .Select(p => new DataPoint(p.Key, p.Value))
+                             .ToList();
             }
         }
 
@@ -46,9 +53,11 @@ namespace BigDataClient.BL.Stocks
         {
             get
             {
+                int rollingIndex = 1;
                 return _stock.Tickers
-                             .ToDictionary(t => t.Date.Day, t => t.High)
-                             .Select(p => new DataPoint(p.Key, p.Value));
+                             .ToDictionary(t => rollingIndex++, t => t.High)
+                             .Select(p => new DataPoint(p.Key, p.Value))
+                             .ToList();
             }
         }
 
@@ -56,9 +65,11 @@ namespace BigDataClient.BL.Stocks
         {
             get
             {
+                int rollingIndex = 1;
                 return _stock.Tickers
-                             .ToDictionary(t => t.Date.Day, t => t.Low)
-                             .Select(p => new DataPoint(p.Key, p.Value));
+                             .ToDictionary(t => rollingIndex++, t => t.Low)
+                             .Select(p => new DataPoint(p.Key, p.Value))
+                             .ToList();
             }
         }
 
@@ -66,9 +77,11 @@ namespace BigDataClient.BL.Stocks
         {
             get
             {
+                int rollingIndex = 1;
                 return _stock.Tickers
-                             .ToDictionary(t => t.Date.Day, t => t.Close)
-                             .Select(p => new DataPoint(p.Key, p.Value));
+                             .ToDictionary(t => rollingIndex++, t => t.Close)
+                             .Select(p => new DataPoint(p.Key, p.Value))
+                             .ToList();
             }
         }
 
