@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
-using FluentDateTime;
 using RestSharp;
 
 namespace BigDataClient.BL.Stocks
@@ -76,7 +75,7 @@ namespace BigDataClient.BL.Stocks
                 // create the REST client
                 var client = new RestClient(STOCK_DATA_BASE_URI);
                 // calculate the start from date
-                var fromDate = DateTime.Now.SubtractBusinessDays(days);
+                //var fromDate = DateTime.Now.Substract(TimeSpan.FromDays(days));
                 // create the REST request
                 var request = new RestRequest().AddQueryParameter(STOCK_DATA_SYMBOL_PARAM, symbol)
                                                //.AddQueryParameter(STOCK_DATA_FROM_MONTH_PARAM, (fromDate.Month - 1).ToString())
