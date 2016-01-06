@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
+using FluentDateTime;
 using RestSharp;
 
 namespace BigDataClient.BL.Stocks
@@ -53,6 +54,7 @@ namespace BigDataClient.BL.Stocks
                     {
                         // read csv record
                         csv.Read();
+                        
                         // add it to the list
                         stocks.Add(csv.GetRecord<Stock>());
                     }
@@ -74,15 +76,15 @@ namespace BigDataClient.BL.Stocks
                 // create the REST client
                 var client = new RestClient(STOCK_DATA_BASE_URI);
                 // calculate the start from date
-                var fromDate = DateTime.Now.Subtract(TimeSpan.FromDays(days));
+                var fromDate = DateTime.Now.SubtractBusinessDays(days);
                 // create the REST request
                 var request = new RestRequest().AddQueryParameter(STOCK_DATA_SYMBOL_PARAM, symbol)
-                                               .AddQueryParameter(STOCK_DATA_FROM_MONTH_PARAM, (fromDate.Month - 1).ToString())
-                                               .AddQueryParameter(STOCK_DATA_FROM_DAYS_PARAM, fromDate.Day.ToString())
-                                               .AddQueryParameter(STOCK_DATA_FROM_YEAR_PARAM, fromDate.Year.ToString())
-                                               .AddQueryParameter(STOCK_DATA_TO_MONTH_PARAM, (DateTime.Now.Month - 1).ToString())
-                                               .AddQueryParameter(STOCK_DATA_TO_DAYS_PARAM, DateTime.Now.Day.ToString())
-                                               .AddQueryParameter(STOCK_DATA_TO_YEAR_PARAM, DateTime.Now.Year.ToString())
+                                               //.AddQueryParameter(STOCK_DATA_FROM_MONTH_PARAM, (fromDate.Month - 1).ToString())
+                                               //.AddQueryParameter(STOCK_DATA_FROM_DAYS_PARAM, fromDate.Day.ToString())
+                                               //.AddQueryParameter(STOCK_DATA_FROM_YEAR_PARAM, fromDate.Year.ToString())
+                                               //.AddQueryParameter(STOCK_DATA_TO_MONTH_PARAM, (DateTime.Now.Month - 1).ToString())
+                                               //.AddQueryParameter(STOCK_DATA_TO_DAYS_PARAM, DateTime.Now.Day.ToString())
+                                               //.AddQueryParameter(STOCK_DATA_TO_YEAR_PARAM, DateTime.Now.Year.ToString())
                                                .AddQueryParameter(STOCK_DATA_INTERVAL_PARAM, "d");
                 // execute request
                 var response = client.Get(request);
@@ -91,6 +93,7 @@ namespace BigDataClient.BL.Stocks
                 using (var csvReader = new CsvReader(textReader))
                 {
                     return csvReader.GetRecords<StockTicker>()
+                                    .Take(days)
                                     .ToList();
                 }
             }

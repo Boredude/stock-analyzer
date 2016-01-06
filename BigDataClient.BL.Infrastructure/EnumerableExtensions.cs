@@ -17,12 +17,16 @@ namespace BigDataClient.BL.Infrastructure
             }
         }
 
-        public static IEnumerable<double> Normalize(this IEnumerable<double> enumerable)
+        public static IEnumerable<double> Normalize(this IEnumerable<double> enumerable, int newMin = 0, int newMax = 100)
         {
             if (enumerable == null || !enumerable.Any()) return enumerable;
             var doubles = enumerable as IList<double> ?? enumerable.ToList();
+
+            // get max and min for given range
             var max = doubles.Max();
-            return doubles.Select(i => i/ max);
+            var min = doubles.Min();
+
+            return doubles.Select(i => (i - min) / (max - min) * (newMax - newMin) + newMin);
         } 
     }
 }
