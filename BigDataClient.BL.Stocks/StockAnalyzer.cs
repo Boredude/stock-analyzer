@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -64,6 +65,10 @@ namespace BigDataClient.BL.Stocks
 
             // TODO: Continue implementation
 
+            // get clustering results
+            // TODO: read this from SSH
+            var clusteringResults = GetClusteringResults(@"C:\Users\Omri\Desktop\part-r-00000");
+
             // Indicate analyze process has finished hence can be started
             IsAnalyzing = false;
             // stop stopwatch
@@ -73,10 +78,11 @@ namespace BigDataClient.BL.Stocks
             {
                 Duration = stopwatch.Elapsed,
                 IsSuccess = true,
-                Results = stocks.Select(stock => new StockAnalysisResult(stock)
-                {
-                    Cluster = 1
-                })
+                Results = stocks.Where(stock => clusteringResults.ContainsKey(stock.Symbol))
+                                .Select(stock => new StockAnalysisResult(stock)
+                                {
+                                    Cluster = clusteringResults[stock.Symbol]
+                                })
             };
         }
 
@@ -127,6 +133,43 @@ namespace BigDataClient.BL.Stocks
                         }
                     }
                 });
+        }
+
+        private Dictionary<string, int> GetClusteringResults(string resultFilePath)
+        {
+            // if file doesn't exist
+            if (!File.Exists(resultFilePath))
+                throw new FileNotFoundException("Results file not found. " + resultFilePath);
+
+            // read original mappings from file
+            var mappings = (from line in File.ReadAllLines(resultFilePath, Encoding.UTF8)
+                            let mapping = line.Split(new [] { '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                            select new
+                            {
+                               Symbol = mapping.FirstOrDefault(),
+                               Cluster = mapping.LastOrDefault()
+                            })
+                           .ToList();
+
+            // convert the mappings to cluster indices (for example 0_0 to 1, 0_1 to 2 and so on ...)
+            var nameMappings = 
+                from mapping in mappings
+                let clusterNameMappings = mappings.Select(m => m.Cluster)
+                                                  .Distinct() 
+                                                  .Select((cluster, index) => new
+                                                  {
+                                                      ClusterName = cluster,
+                                                      ClusterIndex = index + 1
+                                                  })
+                                                  .ToDictionary(k => k.ClusterName, v => v.ClusterIndex)
+                select new
+                {
+                    Symbol = mapping.Symbol,
+                    Cluster = clusterNameMappings[mapping.Cluster]
+                };
+
+            return nameMappings.ToDictionary(k => k.Symbol, 
+                                             v => v.Cluster);
         }
     }
 }

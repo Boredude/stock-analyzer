@@ -67,7 +67,8 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
                 // gether the results
                 Results = new EnhancedObservableCollection<IGrouping<int, IStockAnalysisResult>>
                                                             (args.Results
-                                                                 .GroupBy(result => result.Cluster));
+                                                                 .GroupBy(result => result.Cluster)
+                                                                 .OrderBy(group => group.Key));
             // update status
             _statusUpdater.UpdateStatus($"Stock analysis took {args.Duration}");
         } 
