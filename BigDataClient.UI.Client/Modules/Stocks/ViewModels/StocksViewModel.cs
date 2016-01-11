@@ -10,6 +10,8 @@ using System.Windows;
 using BigData.UI.Client.Events;
 using BigData.UI.Client.Infrastructure;
 using BigData.UI.Client.Modules.Settings.Models;
+using BigData.UI.Client.Properties;
+using BigDataClient.BL.Infrastructure;
 using BigDataClient.BL.Stocks;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -159,7 +161,8 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         {
             return Task.Run(() => _stocksAnalyzer.Analyze(_stockCollection,
                                                           _settingsModel.FeaturesToAnalyze,
-                                                          _settingsModel.NumOfClusters));
+                                                          _settingsModel.NumOfClusters,
+                                                          SshSettings.Default.ToDictionary()));
         }
 
         private async void GetStocks()

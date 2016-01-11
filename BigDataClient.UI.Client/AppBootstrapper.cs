@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
+using BigData.BL.SshCommunication;
 using BigData.UI.Client.Infrastructure;
 using BigDataClient.BL.Infrastructure;
+using BigDataClient.BL.JobDeployer;
 using BigDataClient.BL.Stocks;
 using Prism.Mef;
 using Prism.Regions;
@@ -37,6 +39,8 @@ namespace BigData.UI.Client
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AppBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStatusUpdater).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IStockDataManager).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(IJobDeployer).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(ISshManager).Assembly));
         }
 
         protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()

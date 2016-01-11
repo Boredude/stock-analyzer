@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,22 +9,29 @@ using BigData.BL.SshCommunication;
 
 namespace BigDataClient.BL.JobDeployer
 {
+    [Export(typeof(IJobDeployer))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class JobDeployer : IJobDeployer
     {
         #region Data Members
 
-        private readonly ISshManager _sshManager;
+        [Import]
+        private ISshManager _sshManager;
 
         #endregion
 
         #region Ctor
 
-        public JobDeployer(ISshManager sshManager)
+        public JobDeployer()
         {
-            _sshManager = sshManager;
         }
 
         #endregion
+
+        public void Connect(string remoteIp, string username, string password)
+        {
+            _sshManager.Connect(remoteIp, username, password);
+        }
 
         public void GetOutputFromHostToLocal(string outputLocalPath, string outputHostPathFull)
         {
@@ -117,17 +125,12 @@ namespace BigDataClient.BL.JobDeployer
             Console.WriteLine("Done!");
         }
 
-        public void SendMapReduceFromLocalToHost(string jarLocalPath, string jarHostPath)
+        public void SendMapReduceFromLocalToHost(string srcLocalPath, string srcHostPath)
         {
-            Console.Write("Send jar file to host machine ... ");
+            Console.Write("Send map reduce source files to host machine ... ");
 
-            // send jar file to host machine
-            var jarFileInfo = new FileInfo(jarLocalPath);
-            if (!jarFileInfo.Exists)
-                throw new FileNotFoundException("Jar file was not found");
-
-            // put jar file on remote machine
-            _sshManager.Host.PutFile(jarFileInfo.DirectoryName, jarHostPath, jarFileInfo.Name);
+            // put source file on remote machine
+            _sshManager.Host.PutDirectory(srcLocalPath, srcHostPath);
 
             Console.WriteLine("Done!");
         }

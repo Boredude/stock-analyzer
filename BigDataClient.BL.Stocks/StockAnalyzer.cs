@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using BigDataClient.BL.Infrastructure;
+using BigDataClient.BL.JobDeployer;
 using CsvHelper;
 
 namespace BigDataClient.BL.Stocks
@@ -29,6 +32,9 @@ namespace BigDataClient.BL.Stocks
         [Import]
         private IStatusUpdater _statusUpdater;
 
+        [Import]
+        private IJobDeployer _jobDeployer;
+
         #endregion
 
         #region Ctor
@@ -45,10 +51,14 @@ namespace BigDataClient.BL.Stocks
 
         #endregion
 
-        public IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, StockPriceType features, int clusters)
+        public IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, 
+                                             StockPriceType features, 
+                                             int clusters,
+                                             Dictionary<string, string> settings)
         {
             // Indicate analyze process is in progress hence cannot be started
             IsAnalyzing = true;
+            
             // start stopwatch timer
             var stopwatch = Stopwatch.StartNew(); 
 
@@ -63,7 +73,8 @@ namespace BigDataClient.BL.Stocks
             //Export the stocks to the input directory
             Export("input", stocks, features);
 
-            // TODO: Continue implementation
+            // initate map reduce process
+            LaunchMapReduce(settings, clusters);
 
             // get clustering results
             // TODO: read this from SSH
@@ -133,6 +144,20 @@ namespace BigDataClient.BL.Stocks
                         }
                     }
                 });
+        }
+
+        private void LaunchMapReduce(Dictionary<string, string> settings, int clusters)
+        {
+            //// connect to remote host
+            //_jobDeployer.Connect(settings[SettingsKeys.HostIP],
+            //                     settings[SettingsKeys.HostUsername], 
+            //                     settings[SettingsKeys.HostPassword]);
+
+            //// send map reduce source files to host mahine
+            //_jobDeployer.SendMapReduceFromLocalToHost(settings[SettingsKeys.SrcLocalPath],
+            //                                          settings[SettingsKeys.SrcHostPath]);
+
+
         }
 
         private Dictionary<string, int> GetClusteringResults(string resultFilePath)

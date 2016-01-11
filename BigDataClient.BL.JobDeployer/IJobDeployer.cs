@@ -9,6 +9,8 @@ namespace BigDataClient.BL.JobDeployer
 {
     public interface IJobDeployer
     {
+        void Connect(string remoteIp, string username, string password);
+
         void GetOutputFromHostToLocal(string outputLocalPath, string outputHostPathFull);
 
         void GetOutputFromHdfsToHost(string outputHostPathRelative, string outputHdfsPath);
@@ -23,6 +25,6 @@ namespace BigDataClient.BL.JobDeployer
 
         void PackMapReduceOnHost(string jarName, string classesHostPath);
 
-        void SendMapReduceFromLocalToHost(string jarLocalPath, string jarHostPath);
+        void SendMapReduceFromLocalToHost(string srcLocalPath, string srcHostPath);
     }
 }

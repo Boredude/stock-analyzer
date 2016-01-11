@@ -9,6 +9,9 @@ namespace BigDataClient.BL.Stocks
     public interface IStockAnalyzer
     {
         bool IsAnalyzing { get; }
-        IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, StockPriceType features, int clusters);
+        IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, 
+                                      StockPriceType features, 
+                                      int clusters, 
+                                      Dictionary<string, string> settings);
     }
 }

@@ -1,19 +1,27 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using Renci.SshNet;
 
 namespace BigData.BL.SshCommunication
 {
+    [Export(typeof(ISshManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class SshManager : ISshManager, ISshOperations, ISshHdfsOperations, ISshHadoopOperations
     {
         #region Data Members
 
-        private readonly SshClient sshClient;
-        private readonly ScpClient scpClient;
+        private SshClient sshClient;
+        private ScpClient scpClient;
 
         #endregion
 
         #region Ctor
+
+        [ImportingConstructor]
+        public SshManager()
+        {
+        }
 
         public SshManager(string remoteIp, string username, string password, bool autoConnect = false)
         {
@@ -306,6 +314,14 @@ namespace BigData.BL.SshCommunication
             Disconnect();
             sshClient.Dispose();
             scpClient.Dispose();
+        }
+
+        public void Connect(string remoteIp, string username, string password)
+        {
+            sshClient = new SshClient(remoteIp, username, password);
+            scpClient = new ScpClient(remoteIp, username, password);
+
+            Connect();
         }
 
         public void Connect()
