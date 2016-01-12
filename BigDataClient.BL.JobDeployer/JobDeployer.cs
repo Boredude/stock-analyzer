@@ -44,13 +44,13 @@ namespace BigDataClient.BL.JobDeployer
             Console.WriteLine("Done!");
         }
 
-        public void GetOutputFromHdfsToHost(string outputHostPathRelative, string outputHdfsPath)
+        public void GetOutputFromHdfsToHost(string outputHostPathRelative, string outputHostPathFull, string outputHdfsPath)
         {
             Console.Write("Gathering results from HDFS to host machine ... ");
 
             // get output from HDFS to host machine
             _sshManager.HDFS
-                       .GetFile(outputHostPathRelative, outputHdfsPath);
+                       .GetFile(outputHostPathRelative, outputHostPathFull, outputHdfsPath);
 
             Console.WriteLine("Done!");
         }

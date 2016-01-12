@@ -4,7 +4,7 @@ namespace BigData.BL.SshCommunication
     {
         void CreateDirectory(string path);
 
-        void GetFile(string hostPath, string hdfsPath, string fileName = "");
+        void GetFile(string hostPathRelative, string hostPathFull, string hdfsPath, string fileName = "", bool overwrite =true);
 
         void PutFile(string hostPath, string hdfsPath, string fileName = "", bool overwrite = true);
     }

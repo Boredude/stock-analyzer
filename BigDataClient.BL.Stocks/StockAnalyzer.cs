@@ -116,7 +116,7 @@ namespace BigDataClient.BL.Stocks
                 Duration = stopwatch.Elapsed,
                 IsSuccess = isSuccess,
                 Results = results,
-                EmptyClusters = clusters - (results.Distinct(new ClusterComparer()).Count())
+                EmptyClusters = clusters - results?.Distinct(new ClusterComparer()).Count() ?? clusters
             };
         }
 
@@ -171,7 +171,6 @@ namespace BigDataClient.BL.Stocks
 
         private string LaunchMapReduce(Dictionary<string, string> settings, int clusters)
         {
-            /*
             _statusUpdater.UpdateStatus("Connecting to host machine ...");
             // connect to remote host
             _jobDeployer.Connect(settings[SettingsKeys.HostIP],
@@ -214,18 +213,16 @@ namespace BigDataClient.BL.Stocks
 
             _statusUpdater.UpdateStatus("Gathering outputs from HDFS ...");
             // gather output from hdfs to host machine
-            _jobDeployer.GetOutputFromHdfsToHost(settings[SettingsKeys.OutputHostPathRelative], 
+            _jobDeployer.GetOutputFromHdfsToHost(settings[SettingsKeys.OutputHostPathRelative],
+                                                 settings[SettingsKeys.OutputHostPathFull],
                                                  settings[SettingsKeys.OutputHdfsPath]);
 
             _statusUpdater.UpdateStatus("Downloading outputs from Host machine ...");
             // gather output from hdfs to local machine
             _jobDeployer.GetOutputFromHostToLocal(settings[SettingsKeys.OutputLocalPath],
                                                   settings[SettingsKeys.OutputHostPathFull]);
-            */
+
             _statusUpdater.UpdateStatus("Analyzing results. Hold tight ...");
-
-            Task.Delay(15000).Wait();
-
             // get the results files
             var resultsFiles = Directory.GetFiles(settings[SettingsKeys.OutputLocalPath],
                                                   "part*",

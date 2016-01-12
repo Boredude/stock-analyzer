@@ -111,7 +111,7 @@ namespace BigData.BL.SshCommunication
                 if (dirInfo.Exists)
                 {
                     if (overwrite)
-                        Directory.Delete(localPath);
+                        Directory.Delete(localPath, true);
                     else
                         throw new InvalidOperationException("local path directory already exists: " + localPath);
                 }
@@ -155,7 +155,7 @@ namespace BigData.BL.SshCommunication
             }
         }
 
-        void ISshOperations.PutDirectory(string localPath, string targetPath, bool overwrite = true)
+        void ISshOperations.PutDirectory(string localPath, string targetPath, bool overwrite)
         {
             try
             {
@@ -201,15 +201,25 @@ namespace BigData.BL.SshCommunication
             }
         }
 
-        void ISshHdfsOperations.GetFile(string hostPath, string hdfsPath, string fileName)
+        void ISshHdfsOperations.GetFile(string hostPathRelative, 
+                                        string hostPathFull, 
+                                        string hdfsPath, 
+                                        string fileName,
+                                        bool overwrite)
         {
             try
             {
                 // connect ssh and scp client
                 Connect();
+
+                if (overwrite)
+                    // delete directory if exists
+                    sshClient.RunCommand(string.Format("rm -rf {0}", hostPathFull));
+
+                // run get command
                 var command = sshClient.RunCommand(string.Format("hadoop fs -get {0} {1}", 
                                                                  Path.Combine(hdfsPath, fileName), 
-                                                                 hostPath));
+                                                                 hostPathRelative));
                 // if any error occured
                 if (command.ExitStatus != 0)
                     throw new Exception(command.Error);

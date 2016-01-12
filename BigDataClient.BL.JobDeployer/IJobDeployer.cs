@@ -13,7 +13,7 @@ namespace BigDataClient.BL.JobDeployer
 
         void GetOutputFromHostToLocal(string outputLocalPath, string outputHostPathFull);
 
-        void GetOutputFromHdfsToHost(string outputHostPathRelative, string outputHdfsPath);
+        void GetOutputFromHdfsToHost(string outputHostPathRelative, string outputHostPathFull, string outputHdfsPath);
 
         void RunJob(string jarHostPath, string mainClassName, string inputHdfsPath, string outputHdfsPath, string clusters);
 
