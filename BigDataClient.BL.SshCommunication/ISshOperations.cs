@@ -6,10 +6,10 @@
 
         void GetFile(string localPath, string targetPath, string fileName);
 
-        void GetDirectory(string localPath, string targetPath);
+        void GetDirectory(string localPath, string targetPath, bool overwrite = true);
 
         void PutFile(string localPath, string targetPath, string fileName);
 
-        void PutDirectory(string localPath, string targetPath);
+        void PutDirectory(string localPath, string targetPath, bool overwrite = true);
     }
 }

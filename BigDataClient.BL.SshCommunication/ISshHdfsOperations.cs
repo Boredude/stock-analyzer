@@ -6,6 +6,6 @@ namespace BigData.BL.SshCommunication
 
         void GetFile(string hostPath, string hdfsPath, string fileName = "");
 
-        void PutFile(string hostPath, string hdfsPath, string fileName = "");
+        void PutFile(string hostPath, string hdfsPath, string fileName = "", bool overwrite = true);
     }
 }

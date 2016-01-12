@@ -17,5 +17,32 @@
     <Setting Name="SrcHostPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">/home/training/nasdaq/src</Value>
     </Setting>
+    <Setting Name="InputLocalPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">input</Value>
+    </Setting>
+    <Setting Name="InputHostPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/home/training/nasdaq/input</Value>
+    </Setting>
+    <Setting Name="InputHdfsPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/nasdaq/input</Value>
+    </Setting>
+    <Setting Name="JarName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">nasdaq.jar</Value>
+    </Setting>
+    <Setting Name="OutputHdfsPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/nasdaq/output</Value>
+    </Setting>
+    <Setting Name="MainClassName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">solution.Nasdaq</Value>
+    </Setting>
+    <Setting Name="OutputHostPathRelative" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">nasdaq</Value>
+    </Setting>
+    <Setting Name="OutputHostPathFull" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/home/training/nasdaq/output</Value>
+    </Setting>
+    <Setting Name="OutputLocalPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">output</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

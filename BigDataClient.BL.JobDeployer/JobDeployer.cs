@@ -55,14 +55,14 @@ namespace BigDataClient.BL.JobDeployer
             Console.WriteLine("Done!");
         }
 
-        public void RunJob(string jarHostPath, string inputHdfsPath, string outputHdfsPath)
+        public void RunJob(string jarHostPath, string mainClassName, string inputHdfsPath, string outputHdfsPath, string clusters)
         {
             Console.Write("Running job on hadoop ... ");
 
             // send jar file to host machine
             // put jar file on remote machine
             string result = _sshManager.Hadoop
-                                       .RunJob(jarHostPath, inputHdfsPath, outputHdfsPath);
+                                       .RunJob(jarHostPath, mainClassName, inputHdfsPath,  outputHdfsPath, clusters);
 
             // print result
             Console.WriteLine("-------------------------------------------------------");
@@ -78,8 +78,7 @@ namespace BigDataClient.BL.JobDeployer
         {
             Console.Write("Upload input directory from host machine to HDFS ... ");
 
-            // send jar file to host machine
-            // put jar file on remote machine
+            // send input folder to hdfs
             _sshManager.HDFS.PutFile(inputHostPath, inputHdfsPath);
 
             Console.WriteLine("Done!");

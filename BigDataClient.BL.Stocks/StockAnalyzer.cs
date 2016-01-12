@@ -74,11 +74,9 @@ namespace BigDataClient.BL.Stocks
             Export("input", stocks, features);
 
             // initate map reduce process
-            LaunchMapReduce(settings, clusters);
-
+            var resultsFile = LaunchMapReduce(settings, clusters);
             // get clustering results
-            // TODO: read this from SSH
-            var clusteringResults = GetClusteringResults(@"C:\Users\Omri\Desktop\part-r-00000");
+            var clusteringResults = GetClusteringResults(resultsFile);
 
             // Indicate analyze process has finished hence can be started
             IsAnalyzing = false;
@@ -146,18 +144,65 @@ namespace BigDataClient.BL.Stocks
                 });
         }
 
-        private void LaunchMapReduce(Dictionary<string, string> settings, int clusters)
+        private string LaunchMapReduce(Dictionary<string, string> settings, int clusters)
         {
-            //// connect to remote host
-            //_jobDeployer.Connect(settings[SettingsKeys.HostIP],
-            //                     settings[SettingsKeys.HostUsername], 
-            //                     settings[SettingsKeys.HostPassword]);
+            _statusUpdater.UpdateStatus("Connecting to host machine ...");
+            // connect to remote host
+            _jobDeployer.Connect(settings[SettingsKeys.HostIP],
+                                 settings[SettingsKeys.HostUsername], 
+                                 settings[SettingsKeys.HostPassword]);
 
-            //// send map reduce source files to host mahine
-            //_jobDeployer.SendMapReduceFromLocalToHost(settings[SettingsKeys.SrcLocalPath],
-            //                                          settings[SettingsKeys.SrcHostPath]);
+            _statusUpdater.UpdateStatus("Uploading MapReduce source files to host machine ...");
+            // send map reduce source files to host mahine
+            _jobDeployer.SendMapReduceFromLocalToHost(settings[SettingsKeys.SrcLocalPath],
+                                                      settings[SettingsKeys.SrcHostPath]);
 
+            _statusUpdater.UpdateStatus("Compiling MapReduce source files ...");
+            // complie map reduce job
+            _jobDeployer.ComplieMapReduceOnHost(settings[SettingsKeys.SrcHostPath]);
 
+            _statusUpdater.UpdateStatus("Packing (jaring) MapReduce source files ...");
+            // pack (jar) the map reduce classes
+            _jobDeployer.PackMapReduceOnHost(settings[SettingsKeys.JarName], 
+                                             settings[SettingsKeys.SrcHostPath]);
+
+            _statusUpdater.UpdateStatus("Uploading input files to host machine ...");
+            // send input files to host machine
+            _jobDeployer.SendInputFromLocalToHost(settings[SettingsKeys.InputLocalPath], 
+                                                  settings[SettingsKeys.InputHostPath]);
+
+            _statusUpdater.UpdateStatus("Uploading input files to HDFS ...");
+            // upload input from host machine to HDFS
+            _jobDeployer.SendInputFromHostToHDFS(settings[SettingsKeys.InputHostPath], 
+                                                 settings[SettingsKeys.InputHdfsPath]);
+
+            _statusUpdater.UpdateStatus("Running MapReduce job. This could take a while ...");
+            // run job
+            _jobDeployer.RunJob(string.Format("{0}/{1}", 
+                                              settings[SettingsKeys.SrcHostPath],
+                                              settings[SettingsKeys.JarName]),
+                                settings[SettingsKeys.MainClassName], 
+                                settings[SettingsKeys.InputHdfsPath],
+                                settings[SettingsKeys.OutputHdfsPath],
+                                clusters.ToString());
+
+            _statusUpdater.UpdateStatus("Gathering outputs from HDFS ...");
+            // gather output from hdfs to host machine
+            _jobDeployer.GetOutputFromHdfsToHost(settings[SettingsKeys.OutputHostPathRelative], 
+                                                 settings[SettingsKeys.OutputHdfsPath]);
+
+            _statusUpdater.UpdateStatus("Downloading outputs from Host machine ...");
+            // gather output from hdfs to local machine
+            _jobDeployer.GetOutputFromHostToLocal(settings[SettingsKeys.OutputLocalPath],
+                                                  settings[SettingsKeys.OutputHostPathFull]);
+
+            _statusUpdater.UpdateStatus("Analyzing results. Hold tight ...");
+            // get the results files
+            var resultsFiles = Directory.GetFiles(settings[SettingsKeys.OutputLocalPath], 
+                                                  "part*", 
+                                                  SearchOption.TopDirectoryOnly);
+
+            return resultsFiles.FirstOrDefault();
         }
 
         private Dictionary<string, int> GetClusteringResults(string resultFilePath)

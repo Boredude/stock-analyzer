@@ -67,5 +67,89 @@ namespace BigData.UI.Client.Properties {
                 return ((string)(this["SrcHostPath"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("input")]
+        public string InputLocalPath {
+            get {
+                return ((string)(this["InputLocalPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/home/training/nasdaq/input")]
+        public string InputHostPath {
+            get {
+                return ((string)(this["InputHostPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/nasdaq/input")]
+        public string InputHdfsPath {
+            get {
+                return ((string)(this["InputHdfsPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nasdaq.jar")]
+        public string JarName {
+            get {
+                return ((string)(this["JarName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/nasdaq/output")]
+        public string OutputHdfsPath {
+            get {
+                return ((string)(this["OutputHdfsPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("solution.Nasdaq")]
+        public string MainClassName {
+            get {
+                return ((string)(this["MainClassName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nasdaq")]
+        public string OutputHostPathRelative {
+            get {
+                return ((string)(this["OutputHostPathRelative"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/home/training/nasdaq/output")]
+        public string OutputHostPathFull {
+            get {
+                return ((string)(this["OutputHostPathFull"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("output")]
+        public string OutputLocalPath {
+            get {
+                return ((string)(this["OutputLocalPath"]));
+            }
+            set {
+                this["OutputLocalPath"] = value;
+            }
+        }
     }
 }
