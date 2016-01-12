@@ -37,6 +37,10 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         private IStockAnalyzer _stocksAnalyzer;
         [Import]
         private IStockCollection _stockCollection;
+        [Import]
+        private IStatusUpdater _statusUpdater;
+        [Import]
+        private ITabManager _tabManager;
 
         private EnhancedObservableCollection<IStockViewModel> _stocks;
         private CancellationTokenSource _cancellationTokenSource;
@@ -118,10 +122,14 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
         {
             // subscribe to analysis process start event
             _eventAggregator.GetEvent<StockAnalysisStartedEvent>()
-                            .Subscribe(time => AnalyzeCommand.RaiseCanExecuteChanged());
+                            .Subscribe(time =>
+                            {
+                                AnalyzeCommand.RaiseCanExecuteChanged();
+                                _tabManager.ChangeTab(StockAnalyzerTab.Results);
+                            });
             // subscribe to analysis process completed event
             _eventAggregator.GetEvent<StockAnalysisCompletedEvent>()
-                .Subscribe(time => AnalyzeCommand.RaiseCanExecuteChanged());
+                            .Subscribe(time => AnalyzeCommand.RaiseCanExecuteChanged());
             
             // Subscribe to settings changed event
             _eventAggregator.GetEvent<SettingsChangedEvent>()
@@ -145,6 +153,9 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
 
         private async void AnalyzeStocks()
         {
+            // prepare to analyze
+            _stocksAnalyzer.Prepare();
+
             // publish alasis started event
             _eventAggregator.GetEvent<StockAnalysisStartedEvent>()
                             .Publish(DateTime.Now);
@@ -171,6 +182,7 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 IsBusy = true;
+                _statusUpdater.UpdateStatus("Fetching nasdaq stocks ...");
             });
 
             // wait for stocks to be loaded
@@ -185,6 +197,7 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
             {
                 IsBusy = false;
                 IsLoadingStockData = true;
+                _statusUpdater.UpdateStatus("Downloading nasdaq stocks data ...");
             });
             
             // init cancellation token
@@ -196,6 +209,8 @@ namespace BigData.UI.Client.Modules.Stocks.ViewModels
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 IsLoadingStockData = false;
+                // update status when ready
+                _statusUpdater.UpdateStatus(_settingsModel.ToString());
             });
         }
 

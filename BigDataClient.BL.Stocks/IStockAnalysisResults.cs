@@ -7,6 +7,7 @@ namespace BigDataClient.BL.Stocks
     {
         TimeSpan Duration { get;}
         bool IsSuccess { get; }
+        int EmptyClusters { get; }
         IEnumerable<IStockAnalysisResult> Results { get; }
     }
 }

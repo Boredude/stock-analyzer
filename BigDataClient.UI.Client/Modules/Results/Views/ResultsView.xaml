@@ -6,13 +6,40 @@
              xmlns:local="clr-namespace:BigData.UI.Client.Modules.Results.Views"
              xmlns:viewModels="clr-namespace:BigData.UI.Client.Modules.Results.ViewModels"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=viewModels:IResultsViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
 
+        <!-- No Data -->
+        <TextBlock  HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segeo UI Light"
+                    FontSize="20"
+                    Text="Nothing to see yet ..."
+                    Visibility="{c:Binding '!HasData and !IsLoadingData'}"
+                    Margin="0,5,0,10"/> 
+        
+        <!-- Loading data -->
+        <StackPanel Visibility="{c:Binding IsLoadingData}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock  HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="Segeo UI Light"
+                        FontSize="20"
+                        Text="{Binding Status}"
+                        Margin="0,5,0,10"/>
+            <controls:ProgressRing IsActive="True" />
+        </StackPanel>
+
+        
+        <!-- Has Data -->
         <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto">
+                      HorizontalScrollBarVisibility="Auto"
+                      Visibility="{c:Binding '!IsLoadingData and HasData'}">
 
             <!-- Clusters -->
             <ItemsControl ItemsSource="{Binding Results}">

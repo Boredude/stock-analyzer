@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterComparer.cs" />
     <Compile Include="IStock.cs" />
     <Compile Include="IStockAnalysisResults.cs" />
     <Compile Include="StockAnalysisResult.cs" />

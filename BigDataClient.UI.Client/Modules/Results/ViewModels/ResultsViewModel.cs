@@ -26,6 +26,9 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
         private IStatusUpdater _statusUpdater;
 
         private EnhancedObservableCollection<IGrouping<int, IStockAnalysisResult>> _results;
+        private bool _hasData;
+        private bool _isLoadingData;
+        private string _status;
 
         #endregion
 
@@ -50,27 +53,84 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
             }
         }
 
+        public bool HasData
+        {
+            get { return _hasData; }
+            set
+            {
+                _hasData = value;
+                OnPropertyChanged(() => HasData);
+            }
+        }
+        public bool IsLoadingData
+        {
+            get { return _isLoadingData; }
+            set
+            {
+                _isLoadingData = value;
+                OnPropertyChanged(() => IsLoadingData);
+            }
+        }
+
+        public string Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnPropertyChanged(() => Status);
+            }
+        }
+
+
         #endregion
 
         #region Methods
 
         public void OnImportsSatisfied()
         {
+            // register to stock analysis completed event
+            _eventAggregator.GetEvent<StockAnalysisStartedEvent>()
+                            .Subscribe(OnStockAnalysisStarted);
+
+            // register to stock analysis completed event
             _eventAggregator.GetEvent<StockAnalysisCompletedEvent>()
                             .Subscribe(OnStockAnalysisCompleted);
 
+            // register to get status updates notifications
+            _statusUpdater.StatusChanged += status => Status = status;
+        }
+
+        private void OnStockAnalysisStarted(DateTime timestamp)
+        {
+            // set loading data indicators
+            IsLoadingData = true;
+            HasData = false;
         }
 
         private void OnStockAnalysisCompleted(IStockAnalysisResults args)
         {
+            // set data indicators
+            IsLoadingData = false;
+            HasData = args.IsSuccess;
+
+            // if anaylze was completed successfuly
             if (args.IsSuccess)
+            {
+                var clusters = args.Results
+                                    .GroupBy(result => result.Cluster);
                 // gether the results
                 Results = new EnhancedObservableCollection<IGrouping<int, IStockAnalysisResult>>
-                                                            (args.Results
-                                                                 .GroupBy(result => result.Cluster)
-                                                                 .OrderBy(group => group.Key));
-            // update status
-            _statusUpdater.UpdateStatus($"Stock analysis took {args.Duration}");
+                                                            (clusters.OrderBy(group => group.Key));
+                // update status
+                _statusUpdater.UpdateStatus($"Stock analysis completed with {args.EmptyClusters} empty clusters. " +
+                                            $"Analysis took {args.Duration} ...");
+            }
+            else
+            {
+                // update status
+                _statusUpdater.UpdateStatus($"Stock analysis failed. Analysis took {args.Duration} ...");
+            }
         } 
 
         #endregion

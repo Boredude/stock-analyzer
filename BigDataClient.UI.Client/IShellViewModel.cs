@@ -5,5 +5,6 @@ namespace BigData.UI.Client
         bool IsFlyoutOpen { get; set; }
         string FlyoutTitle { get; set; }
         string StatusBarText { get; set; }
+        int SelectedTab { get; set; }
     }
 }

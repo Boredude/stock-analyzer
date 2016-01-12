@@ -51,47 +51,72 @@ namespace BigDataClient.BL.Stocks
 
         #endregion
 
-        public IStockAnalysisResults Analyze(IEnumerable<IStock> stocks, 
-                                             StockPriceType features, 
-                                             int clusters,
-                                             Dictionary<string, string> settings)
+        #region Methods
+
+        public void Prepare()
         {
+            // prepare by setting indicator
+            IsAnalyzing = true;
+        }
+
+        public IStockAnalysisResults Analyze(IEnumerable<IStock> stocks,
+                                     StockPriceType features,
+                                     int clusters,
+                                     Dictionary<string, string> settings)
+        {
+            // Don't start analyzing if not stocks are enabled
+            if (!stocks.Any())
+                return new StockAnalysisResults
+                {
+                    Duration = new TimeSpan(),
+                    IsSuccess = false,
+                    Results = null
+                };
+
             // Indicate analyze process is in progress hence cannot be started
             IsAnalyzing = true;
-            
+
             // start stopwatch timer
-            var stopwatch = Stopwatch.StartNew(); 
+            var stopwatch = Stopwatch.StartNew();
 
-            // Don't start analyzing if not stocks are enabled
-            if (!stocks.Any()) return new StockAnalysisResults
+            // begin alayzing process
+            bool isSuccess = true;
+            IEnumerable<IStockAnalysisResult> results = default(IEnumerable<IStockAnalysisResult>);
+
+            try
             {
-                Duration = stopwatch.Elapsed,
-                IsSuccess = false,
-                Results = null
-            };
+                //Export the stocks to the input directory
+                Export("input", stocks, features);
+                // initate map reduce process
+                var resultsFile = LaunchMapReduce(settings, clusters);
+                // get clustering results
+                var clusteringResults = GetClusteringResults(resultsFile);
+                // set results
+                results = stocks.Where(stock => clusteringResults.ContainsKey(stock.Symbol))
+                                .Select(stock => new StockAnalysisResult(stock)
+                                {
+                                    Cluster = clusteringResults[stock.Symbol]
+                                });
 
-            //Export the stocks to the input directory
-            Export("input", stocks, features);
-
-            // initate map reduce process
-            var resultsFile = LaunchMapReduce(settings, clusters);
-            // get clustering results
-            var clusteringResults = GetClusteringResults(resultsFile);
-
-            // Indicate analyze process has finished hence can be started
-            IsAnalyzing = false;
-            // stop stopwatch
-            stopwatch.Stop();
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            finally
+            {
+                // Indicate analyze process has finished hence can be started
+                IsAnalyzing = false;
+                // stop stopwatch
+                stopwatch.Stop();
+            }
 
             return new StockAnalysisResults
             {
                 Duration = stopwatch.Elapsed,
-                IsSuccess = true,
-                Results = stocks.Where(stock => clusteringResults.ContainsKey(stock.Symbol))
-                                .Select(stock => new StockAnalysisResult(stock)
-                                {
-                                    Cluster = clusteringResults[stock.Symbol]
-                                })
+                IsSuccess = isSuccess,
+                Results = results,
+                EmptyClusters = clusters - (results.Distinct(new ClusterComparer()).Count())
             };
         }
 
@@ -146,6 +171,7 @@ namespace BigDataClient.BL.Stocks
 
         private string LaunchMapReduce(Dictionary<string, string> settings, int clusters)
         {
+            /*
             _statusUpdater.UpdateStatus("Connecting to host machine ...");
             // connect to remote host
             _jobDeployer.Connect(settings[SettingsKeys.HostIP],
@@ -195,11 +221,14 @@ namespace BigDataClient.BL.Stocks
             // gather output from hdfs to local machine
             _jobDeployer.GetOutputFromHostToLocal(settings[SettingsKeys.OutputLocalPath],
                                                   settings[SettingsKeys.OutputHostPathFull]);
-
+            */
             _statusUpdater.UpdateStatus("Analyzing results. Hold tight ...");
+
+            Task.Delay(15000).Wait();
+
             // get the results files
-            var resultsFiles = Directory.GetFiles(settings[SettingsKeys.OutputLocalPath], 
-                                                  "part*", 
+            var resultsFiles = Directory.GetFiles(settings[SettingsKeys.OutputLocalPath],
+                                                  "part*",
                                                   SearchOption.TopDirectoryOnly);
 
             return resultsFiles.FirstOrDefault();
@@ -213,19 +242,19 @@ namespace BigDataClient.BL.Stocks
 
             // read original mappings from file
             var mappings = (from line in File.ReadAllLines(resultFilePath, Encoding.UTF8)
-                            let mapping = line.Split(new [] { '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                            let mapping = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries)
                             select new
                             {
-                               Symbol = mapping.FirstOrDefault(),
-                               Cluster = mapping.LastOrDefault()
+                                Symbol = mapping.FirstOrDefault(),
+                                Cluster = mapping.LastOrDefault()
                             })
                            .ToList();
 
             // convert the mappings to cluster indices (for example 0_0 to 1, 0_1 to 2 and so on ...)
-            var nameMappings = 
+            var nameMappings =
                 from mapping in mappings
                 let clusterNameMappings = mappings.Select(m => m.Cluster)
-                                                  .Distinct() 
+                                                  .Distinct()
                                                   .Select((cluster, index) => new
                                                   {
                                                       ClusterName = cluster,
@@ -238,8 +267,10 @@ namespace BigDataClient.BL.Stocks
                     Cluster = clusterNameMappings[mapping.Cluster]
                 };
 
-            return nameMappings.ToDictionary(k => k.Symbol, 
+            return nameMappings.ToDictionary(k => k.Symbol,
                                              v => v.Cluster);
-        }
+        } 
+
+        #endregion
     }
 }

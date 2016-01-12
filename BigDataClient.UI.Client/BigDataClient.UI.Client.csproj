@@ -154,6 +154,7 @@
     <Compile Include="Events\StockAnalysisStartedEvent.cs" />
     <Compile Include="Infrastructure\AutoPopulateExportedViewsBehavior.cs" />
     <Compile Include="Infrastructure\Composition.cs" />
+    <Compile Include="Infrastructure\ITabManager.cs" />
     <Compile Include="Infrastructure\IViewRegionRegistration.cs" />
     <Compile Include="Infrastructure\EnhancedObservableCollection.cs" />
     <Compile Include="IShellViewModel.cs" />

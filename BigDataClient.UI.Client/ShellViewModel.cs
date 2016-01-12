@@ -15,10 +15,13 @@ namespace BigData.UI.Client
 
         [Import]
         private IStatusUpdater _statusUpdater;
+        [Import]
+        private ITabManager _tabManager;
 
         private bool _isFlyOutOpen;
         private string _flyoutTitle;
         private string _statusBarText;
+        private int _selectedTab;
 
         #endregion
 
@@ -64,6 +67,19 @@ namespace BigData.UI.Client
             }
         }
 
+        public int SelectedTab
+        {
+            get { return _selectedTab; }
+            set
+            {
+                if (_selectedTab != value)
+                {
+                    _selectedTab = value;
+                    OnPropertyChanged(() => SelectedTab);
+                }
+            }
+        }
+
 
         #endregion
 
@@ -93,6 +109,8 @@ namespace BigData.UI.Client
         {
             // register to status update notifications
             _statusUpdater.StatusChanged += OnStatusChanged;
+            // register to tab change event
+            _tabManager.SelectedTabChanged += tab => SelectedTab = (int) tab;
         }
 
         #endregion

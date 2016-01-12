@@ -7,5 +7,8 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
     public interface IResultsViewModel
     {
         EnhancedObservableCollection<IGrouping<int, IStockAnalysisResult>> Results { get; }
+        bool HasData { get; }
+        bool IsLoadingData { get; }
+        string Status { get; }
     }
 }
