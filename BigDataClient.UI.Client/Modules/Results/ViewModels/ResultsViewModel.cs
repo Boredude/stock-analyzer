@@ -29,6 +29,7 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
         private bool _hasData;
         private bool _isLoadingData;
         private string _status;
+        private string _error;
 
         #endregion
 
@@ -62,6 +63,12 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
                 OnPropertyChanged(() => HasData);
             }
         }
+
+        public bool HasError
+        {
+            get { return !(string.IsNullOrEmpty(Error)  || Error == string.Empty); }
+        }
+
         public bool IsLoadingData
         {
             get { return _isLoadingData; }
@@ -83,6 +90,18 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
         }
 
 
+
+        public string Error
+        {
+            get { return _error ?? string.Empty; }
+            set
+            {
+                _error = value;
+                OnPropertyChanged(() => Error);
+                OnPropertyChanged(() => HasError);
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -103,9 +122,10 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
 
         private void OnStockAnalysisStarted(DateTime timestamp)
         {
-            // set loading data indicators
+            // set loading data and error indicators
             IsLoadingData = true;
             HasData = false;
+            Error = string.Empty;
         }
 
         private void OnStockAnalysisCompleted(IStockAnalysisResults args)
@@ -113,12 +133,13 @@ namespace BigData.UI.Client.Modules.Results.ViewModels
             // set data indicators
             IsLoadingData = false;
             HasData = args.IsSuccess;
+            Error = args.Error;
 
             // if anaylze was completed successfuly
             if (args.IsSuccess)
             {
                 var clusters = args.Results
-                                    .GroupBy(result => result.Cluster);
+                                   .GroupBy(result => result.Cluster);
                 // gether the results
                 Results = new EnhancedObservableCollection<IGrouping<int, IStockAnalysisResult>>
                                                             (clusters.OrderBy(group => group.Key));

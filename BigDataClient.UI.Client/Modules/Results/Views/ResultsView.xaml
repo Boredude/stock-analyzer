@@ -19,7 +19,7 @@
                     FontFamily="Segeo UI Light"
                     FontSize="20"
                     Text="Nothing to see yet ..."
-                    Visibility="{c:Binding '!HasData and !IsLoadingData'}"
+                    Visibility="{c:Binding '!HasData and !HasError and !IsLoadingData'}"
                     Margin="0,5,0,10"/> 
         
         <!-- Loading data -->
@@ -35,11 +35,28 @@
             <controls:ProgressRing IsActive="True" />
         </StackPanel>
 
-        
+
+        <!-- Has Error -->
+        <StackPanel Visibility="{c:Binding '!HasData and HasError and !IsLoadingData'}">
+            <TextBlock  HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segeo UI Light"
+                    FontSize="20"
+                    Text="Analysis failed"
+                    Margin="0,5,0,10"/>
+            <TextBlock  HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segeo UI Light"
+                    FontSize="16"
+                    Text="{Binding Error}"
+                    Margin="0,5,0,10"/>
+        </StackPanel>
+
+
         <!-- Has Data -->
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Auto"
-                      Visibility="{c:Binding '!IsLoadingData and HasData'}">
+                      Visibility="{c:Binding '!IsLoadingData and !HasError and HasData'}">
 
             <!-- Clusters -->
             <ItemsControl ItemsSource="{Binding Results}">

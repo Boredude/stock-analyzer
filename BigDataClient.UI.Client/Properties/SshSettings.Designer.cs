@@ -25,7 +25,7 @@ namespace BigData.UI.Client.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.192.128")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.65.128")]
         public string HostIP {
             get {
                 return ((string)(this["HostIP"]));

@@ -70,6 +70,7 @@ namespace BigDataClient.BL.Stocks
                 {
                     Duration = new TimeSpan(),
                     IsSuccess = false,
+                    Error = "No stocks to analyze",
                     Results = null
                 };
 
@@ -81,6 +82,7 @@ namespace BigDataClient.BL.Stocks
 
             // begin alayzing process
             bool isSuccess = true;
+            string error = string.Empty;
             IEnumerable<IStockAnalysisResult> results = default(IEnumerable<IStockAnalysisResult>);
 
             try
@@ -102,6 +104,7 @@ namespace BigDataClient.BL.Stocks
             catch (Exception ex)
             {
                 isSuccess = false;
+                error = ex?.InnerException?.Message ?? ex?.Message;
             }
             finally
             {
@@ -115,6 +118,7 @@ namespace BigDataClient.BL.Stocks
             {
                 Duration = stopwatch.Elapsed,
                 IsSuccess = isSuccess,
+                Error = error,
                 Results = results,
                 EmptyClusters = clusters - results?.Distinct(new ClusterComparer()).Count() ?? clusters
             };
