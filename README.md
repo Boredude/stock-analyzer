@@ -1,8 +1,8 @@
 # Stock-Analyzer
 
-This project is an end-to-end demo of stock analysis using big data & machine learning algorithms on top of hadoop.
+This project is an end-to-end stock analysis application using big data & machine learning algorithms on top of hadoop.
 
-Steps to run the application:
+**Steps to run the application:**
 
  Configure the ssh propeties in the exe.config file and run the application
 
